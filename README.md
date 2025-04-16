@@ -44,14 +44,14 @@ public class Example {
             .setTenantId("your-tenant-id")
             .setAuthUrl("https://auth.neurallog.com")
             .setLogsUrl("https://logs.neurallog.com");
-        
+
         // Create client
         NeuralLogClient client = new NeuralLogClient(config);
-        
+
         // Authenticate with API key
         try {
             client.authenticateWithApiKey("your-api-key");
-            
+
             // Log data
             Map<String, Object> logData = new HashMap<>();
             logData.put("level", "info");
@@ -59,20 +59,20 @@ public class Example {
             logData.put("timestamp", java.time.Instant.now().toString());
             logData.put("user", "john.doe");
             logData.put("action", "login");
-            
+
             String logId = client.log("application-logs", logData);
             System.out.println("Log sent with ID: " + logId);
-            
+
             // Get logs
             List<Map<String, Object>> logs = client.getLogs("application-logs", 10);
             System.out.println("Recent logs: " + logs);
-            
+
             // Search logs
             SearchOptions searchOptions = new SearchOptions("login")
                 .setLimit(10);
             List<Map<String, Object>> searchResults = client.searchLogs("application-logs", searchOptions);
             System.out.println("Search results: " + searchResults);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -99,26 +99,26 @@ public class AsyncExample {
         NeuralLogClient client = new NeuralLogClient(
             new NeuralLogClientConfig("your-tenant-id")
         );
-        
+
         // Authenticate
         client.authenticateWithApiKey("your-api-key");
-        
+
         // Log data asynchronously
         Map<String, Object> logData = new HashMap<>();
         logData.put("level", "info");
         logData.put("message", "Async logging example");
-        
+
         CompletableFuture<String> future = client.logAsync("application-logs", logData);
-        
+
         future.thenAccept(logId -> {
             System.out.println("Log sent with ID: " + logId);
         }).exceptionally(e -> {
             System.err.println("Failed to send log: " + e.getMessage());
             return null;
         });
-        
+
         // ... do other work ...
-        
+
         // Close client when done
         client.close();
     }
@@ -147,6 +147,28 @@ API Key
    |
    └── Log Name Key
 ```
+
+## Documentation
+
+Detailed documentation is available in the [docs](./docs) directory:
+
+- [API Reference](./docs/api.md)
+- [Configuration](./docs/configuration.md)
+- [Architecture](./docs/architecture.md)
+- [Examples](./docs/examples)
+
+For integration guides and tutorials, visit the [NeuralLog Documentation Site](https://neurallog.github.io/docs/).
+
+## Contributing
+
+Contributions are welcome! Please read our [Contributing Guide](./CONTRIBUTING.md) for details on our code of conduct and the process for submitting pull requests.
+
+## Related NeuralLog Components
+
+- [NeuralLog Auth](https://github.com/NeuralLog/auth) - Authentication and authorization
+- [NeuralLog Server](https://github.com/NeuralLog/server) - Core server functionality
+- [NeuralLog Web](https://github.com/NeuralLog/web) - Web interface components
+- [NeuralLog TypeScript Client SDK](https://github.com/NeuralLog/typescript-client-sdk) - TypeScript client SDK
 
 ## License
 
